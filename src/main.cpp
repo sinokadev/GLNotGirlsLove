@@ -1,6 +1,23 @@
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <string>
+#include <iostream>
+#include <fstream>
+
+class Shader {
+public:
+
+    Shader(std::string vertex_path, std::string fragment_path) {
+        std::string vertex_code;
+        std::string fragment_code;
+        std::ifstream vertex_file(vertex_path);
+        std::ifstream fragment_file(fragment_path);
+
+        
+    }
+
+};
 
 int main() {
     if (!glfwInit()) {
