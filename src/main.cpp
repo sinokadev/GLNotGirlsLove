@@ -22,16 +22,28 @@ int main() {
         return -1;
     }
     
-    
+
     float vertices[] = {
-        0.5f,  0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        -0.5f, -0.5f, 0.0f,
-        -0.5f,  0.5f, 0.0f
+        0.2f,  0.2f, 0.0f,
+        0.2f, -0.2f, 0.0f,
+        -0.2f, -0.2f, 0.0f,
+        -0.2f,  0.2f, 0.0f,
+
+        0.8f,  0.8f, 0.0f, 
+        0.8f,  0.4f, 0.0f, 
+        0.4f,  0.4f, 0.0f, 
+        0.4f,  0.8f, 0.0f,
+
+        -0.4f, -0.4f, 0.0f, 
+        -0.4f, -0.8f, 0.0f, 
+        -0.8f, -0.8f, 0.0f, 
+        -0.8f, -0.4f, 0.0f
     };
+
     unsigned int indices[] = {  
-        0, 1, 3,
-        1, 2, 3
+        0, 1, 3,   1, 2, 3,
+        4, 5, 7,   5, 6, 7,
+        8, 9, 11,  9, 10, 11
     };
 
     
@@ -110,7 +122,7 @@ int main() {
 
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
 
