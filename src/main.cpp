@@ -1,9 +1,14 @@
-#include <glad/gl.h>
-#include <GLFW/glfw3.h>
 #include <string>
 #include <sstream>
 #include <iostream>
 #include <fstream>
+#include <vector>
+
+#include <glad/gl.h>
+#include <GLFW/glfw3.h>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #define WIDTH 640
 #define HEIGHT 480
@@ -102,6 +107,65 @@ private:
     unsigned int shader_program;
 };
 
+struct Vertex {
+    glm::vec3 Position;
+    glm::vec2 TexCoords;
+    glm::vec3 Normal;
+};
+
+class Mesh {
+public:
+    std::vector<Vertex> vertices;
+    std::vector<unsigned int> indices;
+
+    Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices) {
+        this->vertices = vertices;
+        this->indices = indices;
+
+        setupMesh();
+    }
+
+    void draw(const Shader &shader) {
+        glBindVertexArray(VAO);
+        glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(indices.size()), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+    }
+
+    ~Mesh() {
+        glDeleteVertexArrays(1, &VAO);
+        glDeleteBuffers(1, &VBO);
+        glDeleteBuffers(1, &EBO);
+    }
+
+private:
+    unsigned int VAO, VBO, EBO;
+
+    void setupMesh() {
+        glGenVertexArrays(1, &VAO);
+        glGenBuffers(1, &VBO);
+        glGenBuffers(1, &EBO);
+
+        glBindVertexArray(VAO);
+
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
+
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
+
+        glBindVertexArray(0);
+    }
+};
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
@@ -135,45 +199,19 @@ int main() {
 
     Shader shader("src/shaders/shader.vert", "src/shaders/shader.frag");
 
-    float vertices[] = {
-        0.2f,  0.2f, 0.0f,
-        0.2f, -0.2f, 0.0f,
-        -0.2f, -0.2f, 0.0f,
-        -0.2f,  0.2f, 0.0f,
-
-        0.8f,  0.8f, 0.0f,
-        0.8f,  0.4f, 0.0f,
-        0.4f,  0.4f, 0.0f,
-        0.4f,  0.8f, 0.0f,
-
-        -0.4f, -0.4f, 0.0f,
-        -0.4f, -0.8f, 0.0f,
-        -0.8f, -0.8f, 0.0f,
-        -0.8f, -0.4f, 0.0f
+    std::vector<Vertex> vertices = {
+        // 첫 번째 사각형 (중앙 근처)
+        {{ 0.2f,  0.2f, 0.0f}, {1.0f, 1.0f}, {0.0f, 0.0f, 1.0f}}, // 0
+        {{ 0.2f, -0.2f, 0.0f}, {1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}}, // 1
+        {{-0.2f, -0.2f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}}, // 2
+        {{-0.2f,  0.2f, 0.0f}, {0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}}, // 3
     };
 
-    unsigned int indices[] = {
-        0, 1, 3,   1, 2, 3,
-        4, 5, 7,   5, 6, 7,
-        8, 9, 11,  9, 10, 11
+    std::vector<unsigned int> indices = {
+        0, 1, 3,   1, 2, 3,    // 첫 번째 사각형
     };
 
-    // VBO, VAO, EBO
-    unsigned int VBO, VAO, EBO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
+    Mesh test_mesh(vertices, indices);
 
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -181,8 +219,7 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         shader.use();
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, 0);
+        test_mesh.draw(shader);
 
         glfwSwapBuffers(window);
 
