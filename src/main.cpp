@@ -9,6 +9,7 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #define WIDTH 640
 #define HEIGHT 480
@@ -95,7 +96,9 @@ public:
         glUseProgram(shader_program); 
     }
 
-    unsigned int getID() const {
+    
+
+    unsigned int get_id() const {
         return shader_program;
     }
 
@@ -166,6 +169,44 @@ private:
     }
 };
 
+class Object {
+public:
+    glm::vec3 position = glm::vec3(0.0f);
+    glm::vec3 rotation = glm::vec3(0.0f);
+    glm::vec3 scale = glm::vec3(0.1f);
+
+    Object(Mesh &mesh, Shader &shader, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale) : 
+    mesh(mesh),
+    shader(shader),
+    position(position),
+    rotation(rotation),
+    scale(scale) {
+        model_loc = glGetUniformLocation(shader.get_id(), "model");
+    }
+
+    void draw() {
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, position);
+        model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1, 0, 0));
+        model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0, 1, 0));
+        model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0, 0, 1));
+        model = glm::scale(model, scale);
+
+        glUniformMatrix4fv(model_loc, 1, GL_FALSE, glm::value_ptr(model));
+
+        mesh.draw(shader);
+    }
+
+    unsigned int get_shader_id() {
+        return shader.get_id();
+    }
+
+private:
+    Mesh &mesh;
+    Shader &shader;
+    unsigned int model_loc;
+};
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
@@ -211,7 +252,8 @@ int main() {
         0, 1, 3,   1, 2, 3,    // 첫 번째 사각형
     };
 
-    Mesh test_mesh(vertices, indices);
+    Mesh mesh(vertices, indices);
+    Object object(mesh, shader, glm::vec3(0), glm::vec3(0,0,1), glm::vec3(1));
 
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -219,7 +261,7 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         shader.use();
-        test_mesh.draw(shader);
+        object.draw();
 
         glfwSwapBuffers(window);
 
