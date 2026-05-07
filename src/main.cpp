@@ -96,7 +96,45 @@ public:
         glUseProgram(shader_program); 
     }
 
-    
+    void set(const std::string &name, bool value) const {
+        glUniform1i(glGetUniformLocation(shader_program, name.c_str()), (int)value);
+    }
+
+    void set(const std::string &name, int value) const {
+        glUniform1i(glGetUniformLocation(shader_program, name.c_str()), value);
+    }
+
+    void set(const std::string &name, float value) const {
+        glUniform1f(glGetUniformLocation(shader_program, name.c_str()), value);
+    }
+
+    void set(const std::string &name, const glm::vec3 &value) const {
+        glUniform3fv(glGetUniformLocation(shader_program, name.c_str()), 1, &value[0]);
+    }
+
+    void set(const std::string &name, const glm::mat4 &value) const {
+        glUniformMatrix4fv(glGetUniformLocation(shader_program, name.c_str()), 1, GL_FALSE, &value[0][0]);
+    }
+
+    void set(int location, bool value) const {
+        glUniform1i(location, value);
+    }
+
+    void set(int location, int value) const {
+        glUniform1i(location, value);
+    }
+
+    void set(int location, float value) const {
+        glUniform1f(location, value);
+    }
+
+    void set(int location, const glm::vec3 &value) const {
+        glUniform3fv(location, 1, &value[0]);
+    }
+
+    void set(int location, const glm::mat4 &value) const {
+        glUniformMatrix4fv(location, 1, GL_FALSE, &value[0][0]);
+    }
 
     unsigned int get_id() const {
         return shader_program;
@@ -192,7 +230,7 @@ public:
         model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0, 0, 1));
         model = glm::scale(model, scale);
 
-        glUniformMatrix4fv(model_loc, 1, GL_FALSE, glm::value_ptr(model));
+        shader.set(model_loc, model);
 
         mesh.draw(shader);
     }
