@@ -52,11 +52,11 @@ public:
         glCompileShader(vertex_shader);
 
         int success;
-        char infoLog[512];
+        char log[512];
         glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
         if (!success) {
-            glGetShaderInfoLog(vertex_shader, 512, NULL, infoLog);
-            std::cerr << "Failed to compile vertex shader\n" << infoLog << std::endl;
+            glGetShaderInfoLog(vertex_shader, 512, NULL, log);
+            std::cerr << "Failed to compile vertex shader\n" << log << std::endl;
         }
 
         // Compile fragment shader
@@ -66,8 +66,8 @@ public:
 
         glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
         if (!success) {
-            glGetShaderInfoLog(fragment_shader, 512, NULL, infoLog);
-            std::cerr << "Failed to compile fragment shader\n" << infoLog << std::endl;
+            glGetShaderInfoLog(fragment_shader, 512, NULL, log);
+            std::cerr << "Failed to compile fragment shader\n" << log << std::endl;
         }
 
         // Link shader
@@ -78,8 +78,8 @@ public:
 
         glGetProgramiv(shader_program, GL_LINK_STATUS, &success);
         if (!success) {
-            glGetProgramInfoLog(shader_program, 512, NULL, infoLog);
-            std::cerr << "Failed to link shaders\n" << infoLog << std::endl;
+            glGetProgramInfoLog(shader_program, 512, NULL, log);
+            std::cerr << "Failed to link shaders\n" << log << std::endl;
         }
 
         glDeleteShader(vertex_shader);
