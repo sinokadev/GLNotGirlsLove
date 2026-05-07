@@ -5,6 +5,10 @@
 #include <iostream>
 #include <fstream>
 
+#define WIDTH 640
+#define HEIGHT 480
+#define TITLE "여기에 TITLE을 써 넣으시오."
+
 class Shader {
 public:
 
@@ -98,13 +102,17 @@ private:
     unsigned int shader_program;
 };
 
+void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+    glViewport(0, 0, width, height);
+}
+
 int main() {
     if (!glfwInit()) {
         std::cerr << "Failed to initialize GLFW" << std::endl;
         return -1;
     }
 
-    GLFWwindow* window = glfwCreateWindow(640, 480, "GLNotGirlsLove", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, TITLE, NULL, NULL);
     if (!window) {
         std::cerr << "Failed to create window" << std::endl;
         glfwTerminate();
@@ -113,10 +121,17 @@ int main() {
 
     glfwMakeContextCurrent(window);
 
+    // Callbacks
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
     if (!gladLoadGL((GLADloadfunc)glfwGetProcAddress)) {
         std::cerr << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
+
+    int fb_width, fb_height;
+    glfwGetFramebufferSize(window, &fb_width, &fb_height);
+    glViewport(0, 0, fb_width, fb_height);
 
     Shader shader("src/shaders/shader.vert", "src/shaders/shader.frag");
 
