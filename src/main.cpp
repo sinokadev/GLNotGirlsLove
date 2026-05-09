@@ -17,9 +17,7 @@
 
 #define WIDTH 640
 #define HEIGHT 480
-#define TITLE "여기에 TITLE을 써 넣으시오."
-
-
+#define TITLE "여기에 TITLE을 써 넣으시오." 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
