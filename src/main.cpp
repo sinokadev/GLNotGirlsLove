@@ -17,10 +17,16 @@
 
 #define WIDTH 640
 #define HEIGHT 480
-#define TITLE "여기에 TITLE을 써 넣으시오." 
+#define TITLE "여기에 TITLE을 써 넣으시오."
+
+int window_width = WIDTH;
+int window_height = HEIGHT;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
+
+    window_width = width;
+    window_height = height;
 }
 
 int main() {
@@ -76,7 +82,7 @@ int main() {
         glm::mat4 view = glm::mat4(1.0f);
         view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f)); 
 
-        glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)window_width / (float)window_height, 0.1f, 100.0f);
 
         shader.set("view", view);
         shader.set("projection", projection);
