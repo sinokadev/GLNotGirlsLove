@@ -20,7 +20,7 @@ struct Vertex {
 class Mesh {
 public:
     std::vector<Vertex> vertices;
-    std::vector<unsigned int> indices;Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);void draw(const Shader &shader);~Mesh();
+    std::vector<unsigned int> indices;Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);void draw(const Shader &shader);void cleanup();
 
 private:
     unsigned int VAO, VBO, EBO;void setupMesh();

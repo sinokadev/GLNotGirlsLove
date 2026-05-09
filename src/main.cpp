@@ -88,6 +88,9 @@ int main() {
         glfwPollEvents();
     }
 
+    shader.destroy();
+    mesh.cleanup();
+
     glfwTerminate();
     return 0;
 }

@@ -13,12 +13,9 @@ FetchContent_MakeAvailable(glm)
 set(CMAKE_OPENGL_GL_PREFERENCE GLVND)
 project(GLNotGirlsLove)
 
-set(SOURCES 
-    src/main.cpp 
-    src/gl.c
-)
+file(GLOB SOURCES "src/*.c" "src/*.cpp")
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_executable(GLNotGirlsLove ${SOURCES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE include)
 
