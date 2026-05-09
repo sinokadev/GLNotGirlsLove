@@ -20,3 +20,5 @@ clean:
 
 list:
     @just --list
+
+help: list
