@@ -13,7 +13,7 @@ FetchContent_MakeAvailable(glm)
 set(CMAKE_OPENGL_GL_PREFERENCE GLVND)
 project(GLNotGirlsLove)
 
-file(GLOB SOURCES "src/*.c" "src/*.cpp")
+file(GLOB SOURCES "src/*.c" "src/*.cpp" "library/*.c")
 
 add_executable(GLNotGirlsLove ${SOURCES})
 
