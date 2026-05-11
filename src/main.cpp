@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <iomanip>
 
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
@@ -44,7 +45,8 @@ void process_input(GLFWwindow *window, MovingCamera &camera, float deltaTime) {
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) camera.rotate(0.0f, rotation_speed * deltaTime);
     if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) camera.rotate(0.0f, -rotation_speed * deltaTime);
 
-    std::cout << "Player Pos: " 
+    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) std::cout << "Player Pos: "
+        << std::fixed << std::setprecision(3)
         << camera.position.x << ", " 
         << camera.position.y << ", " 
         << camera.position.z << std::endl;
