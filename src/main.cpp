@@ -110,6 +110,8 @@ int main() {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        process_input(window, camera, deltaTime);
+
         // Draw Plane
         shader.use();
 
