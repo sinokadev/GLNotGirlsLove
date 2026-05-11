@@ -36,13 +36,13 @@ void process_input(GLFWwindow *window, MovingCamera &camera, float deltaTime) {
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) camera.move(-camera.right, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) camera.move(camera.right, deltaTime);
 
-    float rotationSpeed = 300.0f;
+    float rotation_speed = 300.0f;
 
-    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) camera.rotate(-rotationSpeed * deltaTime, 0.0f);
-    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) camera.rotate(rotationSpeed * deltaTime, 0.0f);
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) camera.rotate(-rotation_speed * deltaTime, 0.0f);
+    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) camera.rotate(rotation_speed * deltaTime, 0.0f);
 
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) camera.rotate(0.0f, rotationSpeed * deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) camera.rotate(0.0f, -rotationSpeed * deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) camera.rotate(0.0f, rotation_speed * deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) camera.rotate(0.0f, -rotation_speed * deltaTime);
 
     std::cout << "Player Pos: " 
         << camera.position.x << ", " 
@@ -101,29 +101,30 @@ int main() {
 
     MovingCamera camera;
 
-    float deltaTime = 0.0f;
-    float lastFrame = 0.0f;
+    float delta_time = 0.0f;
+    float last_frame = 0.0f;
+    
 
     glEnable(GL_DEPTH_TEST);
 
     while (!glfwWindowShouldClose(window)) {
         // DeltaTime
         float currentFrame = static_cast<float>(glfwGetTime());
-        deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
+        delta_time = currentFrame - last_frame;
+        last_frame = currentFrame;
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        process_input(window, camera, deltaTime);
+        process_input(window, camera, delta_time);
 
         // Draw Plane
         shader.use();
 
         glm::mat4 view = camera.get_view_matrix();
 
-        glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)window_width / (float)window_height, 0.1f, 100.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(camera.fov), (float)window_width / (float)window_height, 0.1f, 100.0f);
 
         shader.set("view", view);
         shader.set("projection", projection);
