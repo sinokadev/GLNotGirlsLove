@@ -17,7 +17,7 @@
 
 #define WIDTH 640
 #define HEIGHT 480
-#define TITLE "여기에 TITLE을 써 넣으시오."
+#define TITLE "CheeseBlock"
 
 int window_width = WIDTH;
 int window_height = HEIGHT;
@@ -76,8 +76,6 @@ int main() {
         std::cerr << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
-    
-    glEnable(GL_MULTISAMPLE);  
 
     int fb_width, fb_height;
     glfwGetFramebufferSize(window, &fb_width, &fb_height);
@@ -86,14 +84,50 @@ int main() {
     Shader shader("src/shaders/shader.vert", "src/shaders/shader.frag");
 
     std::vector<Vertex> vertices = {
-        {{ 0.2f,  0.2f, 0.0f}, {1.0f, 1.0f}, {0.0f, 0.0f, 1.0f}},
-        {{ 0.2f, -0.2f, 0.0f}, {1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}},
-        {{-0.2f, -0.2f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}},
-        {{-0.2f,  0.2f, 0.0f}, {0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}},
+        // Front Face
+        {{ 0.2f,  0.2f,  0.2f}, {1.0f, 1.0f}, {0.0f, 0.0f, 1.0f}},
+        {{ 0.2f, -0.2f,  0.2f}, {1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}},
+        {{-0.2f, -0.2f,  0.2f}, {0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}},
+        {{-0.2f,  0.2f,  0.2f}, {0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}},
+
+        // Back Face
+        {{ 0.2f,  0.2f, -0.2f}, {1.0f, 1.0f}, {0.0f, 0.0f, -1.0f}},
+        {{ 0.2f, -0.2f, -0.2f}, {1.0f, 0.0f}, {0.0f, 0.0f, -1.0f}},
+        {{-0.2f, -0.2f, -0.2f}, {0.0f, 0.0f}, {0.0f, 0.0f, -1.0f}},
+        {{-0.2f,  0.2f, -0.2f}, {0.0f, 1.0f}, {0.0f, 0.0f, -1.0f}},
+
+        // Top Face
+        {{ 0.2f,  0.2f, -0.2f}, {1.0f, 1.0f}, {0.0f, 1.0f, 0.0f}},
+        {{ 0.2f,  0.2f,  0.2f}, {1.0f, 0.0f}, {0.0f, 1.0f, 0.0f}},
+        {{-0.2f,  0.2f,  0.2f}, {0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}},
+        {{-0.2f,  0.2f, -0.2f}, {0.0f, 1.0f}, {0.0f, 1.0f, 0.0f}},
+
+        // Bottom Face
+        {{ 0.2f, -0.2f, -0.2f}, {1.0f, 1.0f}, {0.0f, -1.0f, 0.0f}},
+        {{ 0.2f, -0.2f,  0.2f}, {1.0f, 0.0f}, {0.0f, -1.0f, 0.0f}},
+        {{-0.2f, -0.2f,  0.2f}, {0.0f, 0.0f}, {0.0f, -1.0f, 0.0f}},
+        {{-0.2f, -0.2f, -0.2f}, {0.0f, 1.0f}, {0.0f, -1.0f, 0.0f}},
+
+        // Right Face
+        {{ 0.2f,  0.2f, -0.2f}, {1.0f, 1.0f}, {1.0f, 0.0f, 0.0f}},
+        {{ 0.2f, -0.2f, -0.2f}, {1.0f, 0.0f}, {1.0f, 0.0f, 0.0f}},
+        {{ 0.2f, -0.2f,  0.2f}, {0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}},
+        {{ 0.2f,  0.2f,  0.2f}, {0.0f, 1.0f}, {1.0f, 0.0f, 0.0f}},
+
+        // Left Face
+        {{-0.2f,  0.2f, -0.2f}, {1.0f, 1.0f}, {-1.0f, 0.0f, 0.0f}},
+        {{-0.2f, -0.2f, -0.2f}, {1.0f, 0.0f}, {-1.0f, 0.0f, 0.0f}},
+        {{-0.2f, -0.2f,  0.2f}, {0.0f, 0.0f}, {-1.0f, 0.0f, 0.0f}},
+        {{-0.2f,  0.2f,  0.2f}, {0.0f, 1.0f}, {-1.0f, 0.0f, 0.0f}},
     };
 
     std::vector<unsigned int> indices = {
-        0, 1, 3,   1, 2, 3,
+        0,  1,  3,   1,  2,  3,
+        4,  5,  7,   5,  6,  7,
+        8,  9,  11,  9,  10, 11,
+        12, 13, 15,  13, 14, 15,
+        16, 17, 19,  17, 18, 19,
+        20, 21, 23,  21, 22, 23
     };
 
     Mesh mesh(vertices, indices);
@@ -104,7 +138,7 @@ int main() {
     float delta_time = 0.0f;
     float last_frame = 0.0f;
     
-
+    glEnable(GL_MULTISAMPLE);
     glEnable(GL_DEPTH_TEST);
 
     while (!glfwWindowShouldClose(window)) {
@@ -112,6 +146,8 @@ int main() {
         float currentFrame = static_cast<float>(glfwGetTime());
         delta_time = currentFrame - last_frame;
         last_frame = currentFrame;
+
+        int now_time = glfwGetTime();
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
@@ -128,6 +164,9 @@ int main() {
 
         shader.set("view", view);
         shader.set("projection", projection);
+
+        object.rotation.y += 50.0f * delta_time;
+        if (object.rotation.y > 360.0f) object.rotation.y -= 360.0f;
 
         object.draw();
 
