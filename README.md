@@ -8,7 +8,7 @@ This project uses [just](https://just.systems/) as a command runner.
 
 ```bash
 $ just setup
-$ just # Running main.cpp!
+$ just r cheese_block # Running cheese_block demo!
 ```
 
 or use CMake
@@ -16,6 +16,5 @@ or use CMake
 ```bash
 $ cmake -S . -B build
 $ cmake --build build
-$ ./build/GLNotGirlsLove
+$ ./build/cheese_block
 ```
-
