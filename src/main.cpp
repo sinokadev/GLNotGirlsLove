@@ -83,7 +83,7 @@ int main() {
     glfwGetFramebufferSize(window, &fb_width, &fb_height);
     glViewport(0, 0, fb_width, fb_height);
 
-    Shader shader("src/shaders/shader.vert", "src/shaders/shader.frag");
+    Shader shader("src/shaders/cheese_block.vert", "src/shaders/cheese_block.frag");
 
     std::vector<Vertex> vertices = {
         // Front Face
