@@ -38,6 +38,16 @@ public:
         right = glm::normalize(glm::cross(front, world_up));
         up = glm::normalize(glm::cross(right, front));
     }
+
+    void look_at_target(glm::vec3 target_pos) {
+        glm::vec3 direction = glm::normalize(target_pos - position);
+
+        pitch = glm::degrees(asin(direction.y));
+
+        yaw = glm::degrees(atan2(direction.z, direction.x));
+
+        update_camera_vector();
+    }
 };
 
 class MovingCamera : public Camera {

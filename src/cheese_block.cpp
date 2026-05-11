@@ -30,28 +30,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     window_height = height;
 }
 
-void process_input(GLFWwindow *window, MovingCamera &camera, float deltaTime) {
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) camera.move(camera.front, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) camera.move(-camera.front, deltaTime);
-
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) camera.move(-camera.right, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) camera.move(camera.right, deltaTime);
-
-    float rotation_speed = 300.0f;
-
-    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) camera.rotate(-rotation_speed * deltaTime, 0.0f);
-    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) camera.rotate(rotation_speed * deltaTime, 0.0f);
-
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) camera.rotate(0.0f, rotation_speed * deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) camera.rotate(0.0f, -rotation_speed * deltaTime);
-
-    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) std::cout << "Player Pos: "
-        << std::fixed << std::setprecision(3)
-        << camera.position.x << ", " 
-        << camera.position.y << ", " 
-        << camera.position.z << std::endl;
-}
-
 int main() {
     if (!glfwInit()) {
         std::cerr << "Failed to initialize GLFW" << std::endl;
@@ -135,7 +113,7 @@ int main() {
     Mesh mesh(vertices, indices);
     Object object(mesh, shader, glm::vec3(0), glm::vec3(0,0,0), glm::vec3(1));
 
-    MovingCamera camera;
+    Camera camera({2,1,2});
 
     float delta_time = 0.0f;
     float last_frame = 0.0f;
@@ -155,10 +133,10 @@ int main() {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        process_input(window, camera, delta_time);
-
         // Draw Plane
         shader.use();
+
+        camera.look_at_target({0,0,0});
 
         glm::mat4 view = camera.get_view_matrix();
 

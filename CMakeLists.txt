@@ -13,18 +13,25 @@ FetchContent_MakeAvailable(glm)
 set(CMAKE_OPENGL_GL_PREFERENCE GLVND)
 project(GLNotGirlsLove)
 
-file(GLOB SOURCES "src/*.c" "src/*.cpp" "library/*.c")
+file(GLOB COMMON_SOURCES "src/common/*.cpp" "library/*.c")
 
-add_executable(GLNotGirlsLove ${SOURCES})
-
-target_include_directories(${PROJECT_NAME} PRIVATE include)
+add_library(KetchupEngine STATIC ${COMMON_SOURCES})
+target_include_directories(KetchupEngine PRIVATE include)
 
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
 
-target_link_libraries(${PROJECT_NAME} 
-    PRIVATE 
+target_link_libraries(KetchupEngine
+    PUBLIC 
     OpenGL::GL 
     glfw
     glm::glm
 )
+
+macro(add_demo demo_name main_source)
+    add_executable(${demo_name} ${main_source})
+    target_link_libraries(${demo_name} PRIVATE KetchupEngine)
+    target_include_directories(${demo_name} PRIVATE include)
+endmacro()
+
+add_demo(cheese_block src/cheese_block.cpp)

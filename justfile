@@ -1,19 +1,17 @@
-default: build run
+default:
+    @just --list
 
 setup:
-    cmake -S . -B build
-
-debug:
     cmake -S . -B build -D CMAKE_BUILD_TYPE=Debug
 
-build:
+build-all:
     cmake --build build
 
-run:
-    ./build/GLNotGirlsLove
+run name:
+    cmake --build build --target {{name}}
+    ./build/{{name}}
 
-exec:
-    ./build/GLNotGirlsLove
+alias r := run
 
 clean:
     rm -rf build/
@@ -21,4 +19,4 @@ clean:
 list:
     @just --list
 
-help: list
+help: list 
