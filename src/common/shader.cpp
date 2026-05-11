@@ -9,7 +9,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-Shader::Shader(std::string vertex_path, std::string fragment_path) {
+Shader::Shader () {}
+
+void Shader::load(std::string vertex_path, std::string fragment_path) {
     std::string vertex_code;
     std::string fragment_code;
     std::ifstream vertex_file;
