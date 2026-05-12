@@ -121,6 +121,8 @@ int main() {
     glEnable(GL_MULTISAMPLE);
     glEnable(GL_DEPTH_TEST);
 
+    glfwSwapInterval(1); // V-Sync
+
     while (!glfwWindowShouldClose(window)) {
         // DeltaTime
         float currentFrame = static_cast<float>(glfwGetTime());
