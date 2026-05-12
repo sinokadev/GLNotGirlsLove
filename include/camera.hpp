@@ -56,7 +56,7 @@ public:
     float sensitivity;
 
     MovingCamera(glm::vec3 start_pos = glm::vec3(0.0f, 0.0f, 5.0f)) 
-        : Camera(start_pos + glm::vec3(0.0f, 1.8f, 0.0f)), 
+        : Camera(start_pos), 
           speed(2.5f), sensitivity(0.1f) {
     }
 

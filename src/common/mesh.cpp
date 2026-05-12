@@ -12,7 +12,7 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices) {
     this->vertices = vertices;
     this->indices = indices;
 
-    setupMesh();
+    setup_mesh();
 }
 
 void Mesh::draw(const Shader &shader) {
@@ -27,7 +27,7 @@ void Mesh::cleanup() {
     glDeleteBuffers(1, &EBO);
 }
 
-void Mesh::setupMesh() {
+void Mesh::setup_mesh() {
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
@@ -48,6 +48,9 @@ void Mesh::setupMesh() {
 
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
+
+    glEnableVertexAttribArray(3);
+    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent));
 
     glBindVertexArray(0);
 }

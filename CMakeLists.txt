@@ -35,3 +35,4 @@ macro(add_demo demo_name main_source)
 endmacro()
 
 add_demo(cheese_block src/cheese_block.cpp)
+add_demo(phong_asphalt src/phong_asphalt.cpp)
