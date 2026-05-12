@@ -99,6 +99,11 @@ void Shader::set(const std::string &name, float value) const {
     glUniform1f(glGetUniformLocation(shader_program, name.c_str()), value);
 }
 
+void Shader::set(const std::string &name, const glm::vec2 &value) const {
+    glUniform2fv(glGetUniformLocation(shader_program, name.c_str()), 1, &value[0]);
+}
+
+
 void Shader::set(const std::string &name, const glm::vec3 &value) const {
     glUniform3fv(glGetUniformLocation(shader_program, name.c_str()), 1, &value[0]);
 }
@@ -117,6 +122,10 @@ void Shader::set(int location, int value) const {
 
 void Shader::set(int location, float value) const {
     glUniform1f(location, value);
+}
+
+void Shader::set(int location, const glm::vec2 &value) const {
+    glUniform2fv(location, 1, &value[0]);
 }
 
 void Shader::set(int location, const glm::vec3 &value) const {

@@ -145,6 +145,8 @@ int main() {
         shader.set("view", view);
         shader.set("projection", projection);
 
+        shader.set("u_time", (float)glfwGetTime());
+
         object.rotation.y += 50.0f * delta_time;
         if (object.rotation.y > 360.0f) object.rotation.y -= 360.0f;
 
