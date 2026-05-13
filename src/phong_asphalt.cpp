@@ -245,14 +245,14 @@ int main() {
         shader.set("material.normalMap", 2);
         shader.set("material.roughnessMap", 3);
 
-        shader.set("material.useDiffuseMap", true);
-        shader.set("material.useSpecularMap", true);
-        shader.set("material.useRoughnessMap", true);
-        shader.set("material.useNormalMap", true);
+        shader.set("material.useDiffuseMap", false);
+        shader.set("material.useSpecularMap", false);
+        shader.set("material.useRoughnessMap", false);
+        shader.set("material.useNormalMap", false);
         
         shader.set("material.baseDiffuse", glm::vec3(0.1f,0.35f,0.1f));
         shader.set("material.baseSpecular", glm::vec3(0.45f,0.55f,0.45f));
-        shader.set("material.baseRoughness", glm::vec3(1-0.25));
+        shader.set("material.baseRoughness", 1-0.25f);
 
         shader.set("viewPos", camera.position);
 
