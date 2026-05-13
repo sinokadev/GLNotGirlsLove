@@ -252,7 +252,7 @@ int main() {
         
         shader.set("material.baseDiffuse", glm::vec3(0.1f,0.35f,0.1f));
         shader.set("material.baseSpecular", glm::vec3(0.45f,0.55f,0.45f));
-        shader.set("material.baseRoughness", 1-0.25f);
+        shader.set("material.baseShininess", 128.0f);
 
         shader.set("viewPos", camera.position);
 

@@ -42,7 +42,7 @@ struct Material {
 
     vec3  baseDiffuse;
     vec3  baseSpecular;
-    float baseRoughness; 
+    float baseShininess; 
 };
 uniform Material material;
 
@@ -74,7 +74,7 @@ vec3 calcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir, v
     float diff = max(dot(normal, lightDir), 0.0);
     
     // Specular
-    float shininess = (1.0 - roughness) * 128.0;
+    float shininess = (1.0 - roughness) * 1024.0;
     vec3 reflectDir = reflect(-lightDir, normal);
 
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), max(shininess, 1.0));
@@ -124,7 +124,7 @@ void main() {
     if(material.useRoughnessMap)
         roughness = texture(material.roughnessMap, tiledTexCoords).r;
     else
-        roughness = material.baseRoughness;
+        roughness = (128.0 - material.baseShininess) / 1024.0;
 
     vec3 result = calcDirLight(dirLight, nnormal, viewDir, diffColor, specColor, roughness);
 
