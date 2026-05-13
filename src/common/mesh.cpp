@@ -1,5 +1,5 @@
-#include "mesh.h"
-#include "shader.h"
+#include <KE/shader.h>
+#include <KE/mesh.h>
 
 #include <vector>
 

@@ -51,20 +51,15 @@ uniform vec3 viewPos;
 vec3 calcDirLight(DirLight light, vec3 normal, vec3 viewDir, vec3 diffColor, vec3 specColor, float roughness) {
     vec3 lightDir = normalize(-light.direction);
     
-    // 1. Diffuse shading (난반사)
+    // Diffuse
     float diff = max(dot(normal, lightDir), 0.0);
     
-    // 2. Specular shading (정반사)
+    // Specular
     vec3 reflectDir = reflect(-lightDir, normal);
-
-    // Roughness(0~1)를 Shininess(1~128)로 변환
     float shininess = (1.0 - roughness) * 128.0;
-    
-    // 지수(spec) 계산 - shininess가 0이 되지 않도록 max(..., 1.0) 처리
+
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), max(shininess, 1.0));
 
-    // 3. 결합 (Combine)
-    // 인자로 받은 diffColor와 specColor를 사용합니다.
     vec3 ambient  = light.ambient  * diffColor;
     vec3 diffuse  = light.diffuse  * diff * diffColor;
     vec3 specular = light.specular * spec * specColor;
@@ -102,7 +97,6 @@ void main() {
     float scale = 1.0;
     vec2 tiledTexCoords = TexCoords * scale;
 
-    // 1. Normal 계산
     vec3 nnormal = normalize(Normal);
 
     if(material.useNormalMap) {
@@ -114,36 +108,30 @@ void main() {
     
     vec3 viewDir = normalize(viewPos - FragPos);
 
-    // 2. Diffuse 색상 결정
     vec3 diffColor;
     if(material.useDiffuseMap)
         diffColor = texture(material.diffuseMap, tiledTexCoords).rgb;
     else
         diffColor = material.baseDiffuse;
 
-    // 3. Specular 색상 결정
     vec3 specColor;
     if(material.useSpecularMap)
         specColor = texture(material.specularMap, tiledTexCoords).rgb;
     else
         specColor = material.baseSpecular;
 
-    // 4. Roughness(광택도) 결정
     float roughness;
     if(material.useRoughnessMap)
         roughness = texture(material.roughnessMap, tiledTexCoords).r;
     else
         roughness = material.baseRoughness;
 
-    // 5. 최종 조명 계산
     vec3 result = calcDirLight(dirLight, nnormal, viewDir, diffColor, specColor, roughness);
 
-    // 포인트 라이트 루프
     for(int i = 0; i < POINT_LIGHT_COUNT; i++) {
         result += calcPointLight(pointLights[i], nnormal, FragPos, viewDir, diffColor, specColor, roughness); 
     }
 
-    // 6. Gamma Correction (SRGB 변환)
     vec3 color = pow(result, vec3(1.0/2.2));
     FragColor = vec4(color, 1.0);
 }

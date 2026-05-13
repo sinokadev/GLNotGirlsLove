@@ -14,10 +14,10 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-#include "shader.h"
-#include "mesh.h"
-#include "object.h"
-#include "camera.hpp"
+#include <KE/shader.h>
+#include <KE/mesh.h>
+#include <KE/object.h>
+#include <KE/camera.hpp>
 
 #define WIDTH 640
 #define HEIGHT 480

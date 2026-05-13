@@ -1,6 +1,6 @@
-#include "shader.h"
-#include "mesh.h"
-#include "object.h"
+#include <KE/mesh.h>
+#include <KE/object.h>
+#include <KE/camera.hpp>
 
 #include <vector>
 

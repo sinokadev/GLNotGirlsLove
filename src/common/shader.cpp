@@ -1,4 +1,4 @@
-#include "shader.h"
+#include <KE/shader.h>
 
 #include <sstream>
 #include <iostream>

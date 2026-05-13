@@ -20,7 +20,6 @@ void main() {
 
     vec3 T = normalize(vec3(model * vec4(aTangent, 0.0)));
     vec3 N = normalize(vec3(model * vec4(aNormal, 0.0)));
-    // 그람-슈미트 과정으로 T와 N을 직교화
     T = normalize(T - dot(T, N) * N);
     vec3 B = cross(N, T);
     
