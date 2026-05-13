@@ -123,11 +123,41 @@ int main() {
     Shader shader("src/shaders/phong_asphalt.vert", "src/shaders/phong_asphalt.frag");
 
     std::vector<Vertex> vertices = {
+        // Front Face
+        {{ 0.2f,  0.2f,  0.2f}, {1.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f, 0.0f}},
+        {{ 0.2f, -0.2f,  0.2f}, {1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f, 0.0f}},
+        {{-0.2f, -0.2f,  0.2f}, {0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f, 0.0f}},
+        {{-0.2f,  0.2f,  0.2f}, {0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f, 0.0f}},
+
+        // Back Face
+        {{ 0.2f,  0.2f, -0.2f}, {1.0f, 1.0f}, {0.0f, 0.0f, -1.0f}, {-1.0f, 0.0f, 0.0f}},
+        {{ 0.2f, -0.2f, -0.2f}, {1.0f, 0.0f}, {0.0f, 0.0f, -1.0f}, {-1.0f, 0.0f, 0.0f}},
+        {{-0.2f, -0.2f, -0.2f}, {0.0f, 0.0f}, {0.0f, 0.0f, -1.0f}, {-1.0f, 0.0f, 0.0f}},
+        {{-0.2f,  0.2f, -0.2f}, {0.0f, 1.0f}, {0.0f, 0.0f, -1.0f}, {-1.0f, 0.0f, 0.0f}},
+
         // Top Face
         {{ 0.2f,  0.2f, -0.2f}, {1.0f, 1.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f, 0.0f}},
         {{ 0.2f,  0.2f,  0.2f}, {1.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f, 0.0f}},
         {{-0.2f,  0.2f,  0.2f}, {0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f, 0.0f}},
         {{-0.2f,  0.2f, -0.2f}, {0.0f, 1.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f, 0.0f}},
+
+        // Bottom Face
+        {{ 0.2f, -0.2f, -0.2f}, {1.0f, 1.0f}, {0.0f, -1.0f, 0.0f}, {-1.0f, 0.0f, 0.0f}},
+        {{ 0.2f, -0.2f,  0.2f}, {1.0f, 0.0f}, {0.0f, -1.0f, 0.0f}, {-1.0f, 0.0f, 0.0f}},
+        {{-0.2f, -0.2f,  0.2f}, {0.0f, 0.0f}, {0.0f, -1.0f, 0.0f}, {-1.0f, 0.0f, 0.0f}},
+        {{-0.2f, -0.2f, -0.2f}, {0.0f, 1.0f}, {0.0f, -1.0f, 0.0f}, {-1.0f, 0.0f, 0.0f}},
+
+        // Right Face
+        {{ 0.2f,  0.2f, -0.2f}, {1.0f, 1.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, -1.0f}},
+        {{ 0.2f, -0.2f, -0.2f}, {1.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, -1.0f}},
+        {{ 0.2f, -0.2f,  0.2f}, {0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, -1.0f}},
+        {{ 0.2f,  0.2f,  0.2f}, {0.0f, 1.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, -1.0f}},
+
+        // Left Face
+        {{-0.2f,  0.2f, -0.2f}, {1.0f, 1.0f}, {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}},
+        {{-0.2f, -0.2f, -0.2f}, {1.0f, 0.0f}, {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}},
+        {{-0.2f, -0.2f,  0.2f}, {0.0f, 0.0f}, {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}},
+        {{-0.2f,  0.2f,  0.2f}, {0.0f, 1.0f}, {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}},
     };
 
     std::vector<unsigned int> indices = {
@@ -201,22 +231,33 @@ int main() {
         shader.set("dirLight.diffuse", glm::vec3(0.4f, 0.4f, 0.4f));
         shader.set("dirLight.specular", glm::vec3(0.5f, 0.5f, 0.5f));
 
-        shader.set("pointLights[0].position", glm::vec3(0.0f, 0.0f, 0.0f));
-        shader.set("pointLights[0].ambient", glm::vec3(0.2f));
+        shader.set("pointLights[0].position", glm::vec3(1.0f, 1.0f, 1.0f));
+        shader.set("pointLights[0].ambient", glm::vec3(0.0f));
         shader.set("pointLights[0].diffuse", glm::vec3(0.8f, 0.8f, 0.8f));
         shader.set("pointLights[0].specular", glm::vec3(1.0f, 1.0f, 1.0f));
         shader.set("pointLights[0].constant", 1.0f);
         shader.set("pointLights[0].linear", 0.09f);
         shader.set("pointLights[0].quadratic", 0.032f);
 
-        shader.set("material.diffuse", 0);
-        shader.set("material.specular", 1);
+
+        shader.set("material.diffuseMap", 0);
+        shader.set("material.specularMap", 1);
         shader.set("material.normalMap", 2);
         shader.set("material.roughnessMap", 3);
+
+        shader.set("material.useDiffuseMap", true);
+        shader.set("material.useSpecularMap", true);
+        shader.set("material.useRoughnessMap", true);
+        shader.set("material.useNormalMap", true);
+        
+        shader.set("material.baseDiffuse", glm::vec3(0.1f,0.35f,0.1f));
+        shader.set("material.baseSpecular", glm::vec3(0.45f,0.55f,0.45f));
+        shader.set("material.baseRoughness", glm::vec3(1-0.25));
+
         shader.set("viewPos", camera.position);
 
         // Object
-        object.scale = glm::vec3(30,0,30);
+        object.scale = glm::vec3(1);
         object.position = glm::vec3(0.0f, -1.8f, .0f);
 
         object.draw();
